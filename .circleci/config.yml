@@ -1,26 +1,60 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  eslint-job:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: node:latest
+    working_directory: ~/repo
     steps:
       - checkout
+      - run: npm install
+      - run: npm run eslint
+  test-job:
+    docker:
+      - image: node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+  build-job:
+    docker:
+      - image: node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run build
+  deploy-job:
+    docker:
+      - image: node:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: npm install
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "GIT config"
+          command: |
+            git config user.email "${CIRCLE_PROJECT_USERNAME}@users.noreply.github.com"
+            git config user.name "${CIRCLE_PROJECT_USERNAME}"
+      - run: npm run deploy
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  version: 2
+  deploy-workflow:
     jobs:
-      - say-hello
+      - eslint-job
+      - test-job:
+          requires:
+            - eslint-job
+      - build-job:
+          requires:
+            - eslint-job
+            - test-job
+      - deploy-job:
+          requires:
+            - eslint-job
+            - test-job
+            - build-job
+          filters:
+            branches:
+              only: main
