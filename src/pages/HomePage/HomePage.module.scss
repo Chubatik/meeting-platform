@@ -1,0 +1,49 @@
+ body {
+   background: url("pics/img_1.png") no-repeat;
+   background-size: cover;
+   overflow: hidden;
+}
+
+.textWrapper {
+  margin: 269px 0 0 750px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 30px;
+  line-height: 76.8px;
+  width: 670px;
+
+  & h1 {
+    padding-top: 70px;
+  }
+
+  & h4 {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 32px;
+    text-align: left;
+    opacity: 60%;
+  }
+
+  button {
+    padding: 18px 32px 19px 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #FF7E05;
+    border: none;
+    color: #FFFFFF;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 27px;
+
+    & svg {
+      margin-right: 8px;
+    }
+  }
+}
+
