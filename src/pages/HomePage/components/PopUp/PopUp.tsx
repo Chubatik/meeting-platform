@@ -21,7 +21,7 @@ export const PopUp = ({ trigger, setTrigger }) => {
           <div className={classes.linkWrapper}>
             <div className={classes.linkInput}>
               <label htmlFor="link">Copy Link</label>
-              <input type="text" name="link" placeholder=" https://CreWeb/call/..." />
+              <input type="text" name="link" value="https://CreWeb/call/..." />
             </div>
             <button>
               <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

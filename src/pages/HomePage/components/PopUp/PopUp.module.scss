@@ -36,12 +36,13 @@ div.popUpWrapper {
       margin-top: 8px;
       background: none;
       border: 1px white solid;
+      color: #FFFFFF;
+      font-size: 18px;
+      line-height: 27px;
+      padding-left: 24px;
 
       &::placeholder {
         color: #FFFFFF;
-        font-size: 18px;
-        line-height: 27px;
-        padding-left: 24px;
       }
     }
 
@@ -58,6 +59,7 @@ div.popUpWrapper {
       & input {
         background: #E3FCF2;
         border: none;
+        color: #0CBD75;
 
         &::placeholder {
           color: #0CBD75;
