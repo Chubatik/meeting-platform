@@ -1,5 +1,3 @@
-import { Socket } from 'socket.io'
-
 import { ACTIONS } from '../socket/actions'
 
 import { io } from './index'
@@ -17,4 +15,3 @@ export const shareRoomsInfo = () => {
     rooms: getClientRooms(),
   })
 }
-
