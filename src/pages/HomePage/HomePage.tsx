@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
-import { v4 } from 'uuid'
 
 import { socket } from '../../socket'
 import { ACTIONS } from '../../socket/actions'
 
+import { PopUp } from './components/PopUp/PopUp'
 import classes from './HomePage.module.scss'
 
 export const HomePage = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [rooms, setRooms] = useState([])
+  const [buttonPopUp, setButtonPopUp] = useState(false)
 
   useEffect(() => {
     socket.on(ACTIONS.SHARE_ROOMS, ({ rooms = [] } = {}) => {
       setRooms(rooms)
     })
   })
+  console.log(buttonPopUp)
 
   const clickHandler = () => {
-    navigate(`/room/${v4()}`)
+    // navigate(`/room/${v4()}`)
+    setButtonPopUp(true)
   }
   return (
     <div className={classes.textWrapper}>
@@ -43,6 +45,7 @@ export const HomePage = () => {
         </svg>
         New meeting
       </button>
+      <PopUp trigger={buttonPopUp} setTrigger={setButtonPopUp} />
     </div>
   )
 }
