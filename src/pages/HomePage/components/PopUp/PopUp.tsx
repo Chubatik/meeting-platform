@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { v4 } from 'uuid'
 
@@ -12,10 +12,13 @@ import classes from './PopUp.module.scss'
 export const PopUp = ({ trigger, setTrigger }) => {
   const navigate = useNavigate()
   const [rooms, setRooms] = useState([])
+  const rootNode = useRef()
 
   useEffect(() => {
     socket.on(ACTIONS.SHARE_ROOMS, ({ rooms = [] } = {}) => {
-      setRooms(rooms)
+      if (rootNode.current) {
+        setRooms(rooms)
+      }
     })
   }, [])
   console.log(rooms)
@@ -37,7 +40,12 @@ export const PopUp = ({ trigger, setTrigger }) => {
           <div className={classes.linkWrapper}>
             <div className={classes.linkInput}>
               <label htmlFor="link">Copy Link</label>
-              <input type="text" name="link" value={`https://chubatik.github.io/meeting-platform/#/room/${ID}`} />
+              <input
+                id="link"
+                type="text"
+                name="link"
+                value={`https://chubatik.github.io/meeting-platform/#/room/${ID}`}
+              />
             </div>
             <button>
               <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

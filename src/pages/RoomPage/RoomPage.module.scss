@@ -1,0 +1,43 @@
+.roomWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+
+  h6 {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 16px;
+    position: absolute;
+    height: 32px;
+    left: 116px;
+  }
+
+  button {
+    background: none;
+    border: none;
+    height: 48px;
+    margin: 0 10px;
+
+    &.leaveButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #C4314B;
+      font-weight: 600;
+      font-size: 18px;
+      color: white;
+      width: 181px;
+      position: absolute;
+      left: 85%;
+    }
+  }
+}
