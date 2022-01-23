@@ -22,6 +22,7 @@ export const HomePage = () => {
     // navigate(`/room/${v4()}`)
     setButtonPopUp(true)
   }
+
   return (
     <div className={classes.textWrapper}>
       <h1>Anonymous video calls now!</h1>

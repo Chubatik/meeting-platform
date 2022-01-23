@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
+import { v4 } from 'uuid'
+
+import { socket } from '../../../../socket'
+import { ACTIONS } from '../../../../socket/actions'
 
 import classes from './PopUp.module.scss'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const PopUp = ({ trigger, setTrigger }) => {
+  const navigate = useNavigate()
+  const [rooms, setRooms] = useState([])
+
+  useEffect(() => {
+    socket.on(ACTIONS.SHARE_ROOMS, ({ rooms = [] } = {}) => {
+      setRooms(rooms)
+    })
+  }, [])
+  console.log(rooms)
+
+  const ID = v4()
   return (
     trigger && (
       <div className={classes.popUpWrapper}>
@@ -21,7 +37,7 @@ export const PopUp = ({ trigger, setTrigger }) => {
           <div className={classes.linkWrapper}>
             <div className={classes.linkInput}>
               <label htmlFor="link">Copy Link</label>
-              <input type="text" name="link" value="https://CreWeb/call/..." />
+              <input type="text" name="link" value={`https://chubatik.github.io/meeting-platform/#/room/${ID}`} />
             </div>
             <button>
               <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +66,13 @@ export const PopUp = ({ trigger, setTrigger }) => {
               Copy Link
             </button>
           </div>
-          <button>Join</button>
+          <button
+            onClick={() => {
+              navigate(`/room/${ID}`)
+            }}
+          >
+            Join
+          </button>
         </div>
       </div>
     )
