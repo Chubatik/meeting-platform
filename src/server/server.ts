@@ -2,7 +2,7 @@ import { ACTIONS } from '../socket/actions'
 
 import { getClients, shareRoomsInfo } from './utils'
 
-import { PORT, server, io } from './index'
+import { PORT, server, io, path, app, express } from './index'
 
 server.listen(PORT, () => {
   console.log('server started')
@@ -63,4 +63,32 @@ io.on('connection', (socket) => {
 
   socket.on(ACTIONS.LEAVE, leaveRoom)
   socket.on('disconnecting', leaveRoom)
+
+  socket.on(ACTIONS.RELAY_SDP, ({ peerID, sessionDescription }) => {
+    io.to(peerID).emit(ACTIONS.SESSION_DESCRIPTION, {
+      peerID: socket.id,
+      sessionDescription,
+    })
+  })
+
+  socket.on(ACTIONS.RELAY_ICE, ({ peerID, iceCandidate }) => {
+    io.to(peerID).emit(ACTIONS.ICE_CANDIDATE, {
+      peerID: socket.id,
+      iceCandidate,
+    })
+  })
+})
+
+const publicPath = path.join(__dirname, 'build')
+
+app.use(express.static(publicPath))
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+app.get('*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'))
+})
+
+server.listen(PORT, () => {
+  console.log('Server Started!')
 })
