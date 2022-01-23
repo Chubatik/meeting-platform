@@ -4,6 +4,9 @@ import { getClients, shareRoomsInfo } from './utils'
 
 import { PORT, server, io, path, app, express } from './index'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version, validate } = require('uuid')
+
 server.listen(PORT, () => {
   console.log('server started')
 })
@@ -43,20 +46,22 @@ io.on('connection', (socket) => {
     // @ts-ignore
     const { rooms } = socket
 
-    Array.from(rooms).forEach((roomID) => {
-      const clients = getClients(roomID)
+    Array.from(rooms)
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
+        const clients = getClients(roomID)
 
-      clients.forEach((clientID) => {
-        io.to(clientID).emit(ACTIONS.REMOVE_PEER, {
-          peerID: socket.id,
+        clients.forEach((clientID) => {
+          io.to(clientID).emit(ACTIONS.REMOVE_PEER, {
+            peerID: socket.id,
+          })
+          socket.emit(ACTIONS.REMOVE_PEER, {
+            peerID: clientID,
+          })
         })
-        socket.emit(ACTIONS.REMOVE_PEER, {
-          peerID: clientID,
-        })
+
+        socket.leave(roomID)
       })
-
-      socket.leave(roomID)
-    })
 
     shareRoomsInfo()
   }
